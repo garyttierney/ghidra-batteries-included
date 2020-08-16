@@ -46,3 +46,8 @@ jobs:
           gradle --init-script gradle/support/fetchDependencies.gradle init --quiet 2>&1 > ghidra-dependencies.log
           gradle buildGhidra
 
+      - name: Archive distributuion
+        uses: actions/upload-artifact@v2
+        with:
+          name: ghidra-distribution
+          path: ghidra/upstream/dist
