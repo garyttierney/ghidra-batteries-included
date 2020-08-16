@@ -30,7 +30,7 @@ jobs:
       - name: Cache Ghidra dependency repository
         uses: actions/cache@v2
         with:
-          path: ~/git/ghidra/flatRepo
+          path: ghidra/upstream/flatRepo
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/fetchDependencies.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
@@ -50,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ghidra-distribution
-          path: ghidra/upstream/dist
+          path: ghidra/upstream/build/dist/
