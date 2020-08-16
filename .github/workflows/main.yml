@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
 
       - name: Install dependencies [Windows]
         uses: crazy-max/ghaction-chocolatey@v1
@@ -19,4 +21,7 @@ jobs:
 
       - name: Build Ghidra
         working-directory: ghidra/upstream
-        run: gradle buildGhidra
+        run: |
+          gradle --init-script gradle/support/fetchDependencies.gradle init
+          gradle buildGhidra
+
