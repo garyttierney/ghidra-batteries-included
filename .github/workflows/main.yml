@@ -34,10 +34,16 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/fetchDependencies.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Install dependencies ${{ matrix.os }}
+      - name: Install dependencies [${{ matrix.os }}]
         uses: crazy-max/ghaction-chocolatey@v1
         with:
           args: install -y winflexbison
+        if: ${{ matrix.os == 'windows-latest' }}
+
+      - name: Fix win_flex.exe and win_bison.exe command names
+        run: |
+          Rename-Item (Get-Command win_flex).Path flex.exe
+          Rename-Item (Get-Command win_bison).Path bison.exe
         if: ${{ matrix.os == 'windows-latest' }}
 
       - name: Download Ghidra dependency repository
