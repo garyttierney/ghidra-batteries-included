@@ -60,12 +60,18 @@ jobs:
         env:
           GRADLE_OPTS: -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
 
+      - name: Unpack archive for out of tree extension builds
+        working-directory: ghidra/upstream
+        shell: pwsh
+        run: |
+          Expand-Archive -Path build/dist/*.zip -DestinationPath exploded
+
       - name: Build C++ Class Analyzer
         working-directory: ghidra/ext-cpp-class-analyzer
         run: |
           gradle buildExtension
         env:
-          GHIDRA_INSTALL_DIR: ghidra/upstream
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/
 
       - name: Archive distribution
         uses: actions/upload-artifact@v2
