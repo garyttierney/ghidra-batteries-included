@@ -70,11 +70,17 @@ jobs:
         working-directory: ghidra/ext-cpp-class-analyzer
         run: |
           gradle buildExtension
+          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/Extensions/Ghidra"
         env:
           GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/
+
+      - name: Repack Ghidra archive with additions
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV" -DestinationPath ghidra.zip
 
       - name: Archive distribution
         uses: actions/upload-artifact@v2
         with:
-          name: ghidra-distribution
-          path: ghidra/upstream/build/dist/
+          name: ghidra-distribution-${{ matrix.os }}
+          path: ghidra.zip
