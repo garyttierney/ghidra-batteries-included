@@ -1,0 +1,4 @@
+# Support for shifted pointers.
+https://github.com/nationalSecurityAgency/ghidra/pull/2189.patch
+# Much better performance for type descriptor interactions.
+https://github.com/NationalSecurityAgency/ghidra/pull/2077.patch
