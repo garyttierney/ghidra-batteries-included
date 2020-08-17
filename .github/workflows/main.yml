@@ -50,6 +50,9 @@ jobs:
         working-directory: ghidra/upstream
         shell: pwsh
         run: |
+          git config --global user.name "Gary Tierney"
+          git config --global user.email "gary.tierney+ghidra-automation@fastmail.com"
+
           foreach ($uri in Get-Content ..\patches.txt) {
               if ($uri -notmatch '^#'){
                   Invoke-WebRequest -UseBasicParsing $uri | Select-Object -Expand RawContent | git am -
