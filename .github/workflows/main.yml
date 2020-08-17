@@ -58,7 +58,14 @@ jobs:
         run: |
           gradle buildGhidra
         env:
-          GRADLE_OPTS:  -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
+          GRADLE_OPTS: -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
+
+      - name: Build C++ Class Analyzer
+        working-directory: ghidra/ext-cpp-class-analyzer
+        run: |
+          gradle buildExtension
+        env:
+          GHIDRA_INSTALL_DIR: ghidra/upstream
 
       - name: Archive distribution
         uses: actions/upload-artifact@v2

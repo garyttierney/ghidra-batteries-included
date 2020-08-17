@@ -1,3 +1,6 @@
 [submodule "ghidra-upstream"]
 	path = ghidra/upstream
 	url = https://github.com/NationalSecurityAgency/ghidra.git
+[submodule ".\\ghidra\\ext-cpp-class-analyzer"]
+	path = ghidra/ext-cpp-class-analyzer
+	url = https://github.com/astrelsky/Ghidra-Cpp-Class-Analyzer
