@@ -1,4 +1,4 @@
-name: Build disstributions and container images
+name: Build distributions and container images
 on: push
 jobs:
   build_distribution:
@@ -40,13 +40,21 @@ jobs:
           args: install -y winflexbison
         if: ${{ matrix.os == 'windows-latest' }}
 
-      - name: Build Ghidra
+      - name: Download Ghidra dependency repository
         working-directory: ghidra/upstream
         run: |
           gradle --init-script gradle/support/fetchDependencies.gradle init --quiet 2>&1 > ghidra-dependencies.log
-          gradle buildGhidra
+        env:
+          GRADLE_OPTS:  -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
 
-      - name: Archive distributuion
+      - name: Build Ghidra
+        working-directory: ghidra/upstream
+        run: |
+          gradle buildGhidra
+        env:
+          GRADLE_OPTS:  -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
+
+      - name: Archive distribution
         uses: actions/upload-artifact@v2
         with:
           name: ghidra-distribution
