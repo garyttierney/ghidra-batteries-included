@@ -54,8 +54,9 @@ jobs:
           git config --global user.email "gary.tierney+ghidra-automation@fastmail.com"
 
           foreach ($uri in Get-Content ..\patches.txt) {
+              echo "Applying $uri"
               if ($uri -notmatch '^#'){
-                  Invoke-WebRequest -UseBasicParsing $uri | Select-Object -Expand RawContent | git am -
+                  Invoke-WebRequest -UseBasicParsing $uri | Select-Object -Expand RawContent | git am --verbose -
               }
           }
 
