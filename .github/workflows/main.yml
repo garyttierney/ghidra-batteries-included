@@ -96,7 +96,7 @@ jobs:
         run: |
           Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV" -DestinationPath ghidra.zip
           mkdir -p public/builds/
-          cp ghidra.zip public/builds/ghidra-${{ matrix.os }}.zip
+          cp ghidra.zip ghidra-${{ matrix.os }}.zip
 
       - name: Archive distribution
         uses: actions/upload-artifact@v2
@@ -105,9 +105,9 @@ jobs:
           path: ghidra.zip
 
       - name: Upload distribution to Azure
-        uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+        uses: fixpoint/azblob-upload-artifact@v4
         with:
-          source_dir: 'public'
-          container_name: '$web'
-          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          sync: false
+          connection-string: ${{ secrets.AZURE_CONNECTION_STRING }}
+          name: builds
+          path: ghidra-${{ matrix.os }}.zip
+          container: "$web"
