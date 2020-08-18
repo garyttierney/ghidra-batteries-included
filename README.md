@@ -21,3 +21,7 @@ Alternatively, builds of the latest version in this repository can be downloaded
 
 - [Windows](https://ghidradistribution.z35.web.core.windows.net/builds/ghidra-windows-latest.zip)
 - [Linux](https://ghidradistribution.z35.web.core.windows.net/builds/ghidra-ubuntu-latest.zip)
+
+## Future additions and contributions
+
+See the [issues](https://github.com/garyttierney/ghidra-batteries-included/issues) for planned additions that are not yet present in the builds above.
