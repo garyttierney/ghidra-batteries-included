@@ -1,6 +1,6 @@
 # Ghidra, batteries included
 
-A distribution of Ghidra 9.2 (as of now unreleased) with several extensions and data archives included to simplify reversing of game code.
+A distribution of Ghidra 9.2 (as of now unreleased) with extensions and patches included to simplify reversing code patterns commonly found in games.
 
 ## What's included?
 
