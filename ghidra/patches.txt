@@ -1,6 +1,4 @@
 # Support for shifted pointers.
 https://github.com/nationalSecurityAgency/ghidra/pull/2189.patch
-# Fix a typo in the previous patch.
-https://gist.githubusercontent.com/garyttierney/5465807e75015a6fc21a939b73c85e50/raw/642034c084a494273c76818fb55387b9a3d4e464/0001-fix-typo.patch
 # Much better performance for type descriptor interactions.
 https://github.com/NationalSecurityAgency/ghidra/pull/2077.patch
