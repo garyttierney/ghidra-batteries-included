@@ -1,12 +1,12 @@
 # Ghidra, batteries included
 
 A distribution of Ghidra 9.2 (as of now unreleased) with extensions and patches included to simplify reversing code patterns commonly found in games.
-
 ## What's included?
 
 ### Extensions
 
 - [C++ Class Analyzer](https://github.com/astrelsky/Ghidra-Cpp-Class-Analyzer) - Simplifies analysis of executables with C++ RTTI or vtables present.
+- [ret-sync](https://github.com/bootleg/ret-sync) - Synchronize the Ghidra listing with a debugger.
 
 ### Ghidra patches
 

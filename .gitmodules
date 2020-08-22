@@ -6,4 +6,4 @@
 	url = https://github.com/astrelsky/Ghidra-Cpp-Class-Analyzer
 [submodule "ghidra/ext-ret-sync"]
 	path = ghidra/ext-ret-sync
-	url = https://github.com/bootleg/ret-sync.git
+	url = https://github.com/garyttierney/ret-sync.git

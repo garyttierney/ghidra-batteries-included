@@ -94,6 +94,7 @@ jobs:
       - name: Build ret-sync
         working-directory: ghidra/ext-ret-sync/ext_ghidra
         run: |
+          rm dist/*.zip
           gradle buildExtension
           mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/Extensions/Ghidra"
         env:
