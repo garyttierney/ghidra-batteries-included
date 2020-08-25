@@ -4,6 +4,7 @@
 [submodule ".\\ghidra\\ext-cpp-class-analyzer"]
 	path = ghidra/ext-cpp-class-analyzer
 	url = https://github.com/astrelsky/Ghidra-Cpp-Class-Analyzer
+	branch = experimental
 [submodule "ghidra/ext-ret-sync"]
 	path = ghidra/ext-ret-sync
 	url = https://github.com/garyttierney/ret-sync.git
