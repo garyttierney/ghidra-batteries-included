@@ -120,3 +120,4 @@ jobs:
           name: builds
           path: ghidra-${{ matrix.os }}.zip
           container: "$web"
+        if: ${{ github.ref == 'refs/heads/master' }}
