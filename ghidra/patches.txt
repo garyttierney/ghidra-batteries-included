@@ -2,7 +2,7 @@
 https://github.com/nationalSecurityAgency/ghidra/pull/2189.patch
 # Much better performance for type descriptor interactions.
 https://github.com/NationalSecurityAgency/ghidra/pull/2077.patch
-# Fix Gradle build errors.
-https://github.com/NationalSecurityAgency/ghidra/pull/2242.patch
 # Better "Go To" dialog.
 https://github.com/NationalSecurityAgency/ghidra/pull/2004.patch
+# Fix compile error in above patch
+https://gist.githubusercontent.com/garyttierney/d7a54aa0098b3529ccd88f6b80c2eab5/raw/0d1a673448ecc00787b33181ae17e4930372f181/fix.patch
