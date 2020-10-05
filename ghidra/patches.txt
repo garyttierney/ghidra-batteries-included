@@ -1,7 +1,5 @@
 # Support for shifted pointers.
 https://github.com/nationalSecurityAgency/ghidra/pull/2189.patch
-# Much better performance for type descriptor interactions.
-https://github.com/NationalSecurityAgency/ghidra/pull/2077.patch
 # Better "Go To" dialog.
 https://github.com/NationalSecurityAgency/ghidra/pull/2004.patch
 # Fix compile error in above patch
