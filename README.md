@@ -33,6 +33,7 @@ If you do run into this please open an issue on the issue tracker.
 
 - [C++ Class Analyzer](https://github.com/astrelsky/Ghidra-Cpp-Class-Analyzer) - Simplifies analysis of executables with C++ RTTI or vtables present.
 - [ret-sync](https://github.com/bootleg/ret-sync) - Synchronize the Ghidra listing with a debugger.
+- [Better GoTo](https://github.com/NationalSecurityAgency/ghidra/pull/2004) - Support complex expressions in the GoTo dialog.
 
 ### Ghidra patches
 
@@ -40,7 +41,7 @@ If you do run into this please open an issue on the issue tracker.
 
 ## Where do I get it?
 
-Builds can be downloaded straight from GitHub action runs, like [here](https://github.com/garyttierney/ghidra-batteries-included/actions/runs/212796178).
+Builds can be downloaded straight from GitHub action runs [here](https://github.com/garyttierney/ghidra-batteries-included/actions/).
 Note: you'll need to be authenticated with a GitHub account to download archives listed here.
 
 Alternatively, builds of the latest version in this repository can be downloaded at the following locations:
