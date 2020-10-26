@@ -101,7 +101,7 @@ jobs:
           GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/
 
       - name: Build GhidraOrbis
-        working-directory: ghidra/ext-ghidra-orbis
+        working-directory: ghidra/ext-orbis
         run: |
           gradle buildExtension
           mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/Extensions/Ghidra"
