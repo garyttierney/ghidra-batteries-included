@@ -1,5 +1,5 @@
 # Support for shifted pointers.
-https://gist.githubusercontent.com/garyttierney/69349408b746a729aa5c5cc606cbc6b4/raw/c286dbfe6c29219019095d5d4bf17d57051fc857/gistfile1.txt
+https://gist.githubusercontent.com/garyttierney/0009c0792a9cd42a1087ddf319bd8849/raw/08424607605254d56533acda3646cf218a33ea50/shifted-pointers.patch
 # Better "Go To" dialog.
 https://github.com/NationalSecurityAgency/ghidra/pull/2004.patch
 # Fix compile error in above patch
