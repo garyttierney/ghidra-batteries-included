@@ -1,8 +1,10 @@
 # Support for shifted pointers.
-https://github.com/nationalSecurityAgency/ghidra/pull/2189.patch
+https://gist.githubusercontent.com/garyttierney/0009c0792a9cd42a1087ddf319bd8849/raw/08424607605254d56533acda3646cf218a33ea50/shifted-pointers.patch
 # Better "Go To" dialog.
 https://github.com/NationalSecurityAgency/ghidra/pull/2004.patch
 # Fix compile error in above patch
 https://gist.githubusercontent.com/garyttierney/d7a54aa0098b3529ccd88f6b80c2eab5/raw/0d1a673448ecc00787b33181ae17e4930372f181/fix.patch
 # Fix decompilation for the CELL CPU (PPC 64 with 32 bit addressing)
 https://gist.githubusercontent.com/garyttierney/dff93a75fd06b08caa04f3b88a7a70cf/raw/c2f052441b6baa7c13b71c01ce762b02484aa7e1/0001-Add-r2-to-unaffected-list-on-PPC64_32.patch
+# Fix build error
+https://gist.githubusercontent.com/garyttierney/fe5321e9ecf1295ef1cf9714cd7b23fe/raw/59619bdf10d829e8854c22df4786526794c147a3/build-error.patch
