@@ -87,23 +87,23 @@ jobs:
         working-directory: ghidra/ext-cpp-class-analyzer
         run: |
           gradle buildExtension
-          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/Extensions/Ghidra"
+          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
         env:
-          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
 
       - name: Build ret-sync
         working-directory: ghidra/ext-ret-sync/ext_ghidra
         run: |
           rm dist/*.zip
           gradle buildExtension
-          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/Extensions/Ghidra"
+          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
         env:
-          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
 
       - name: Repack Ghidra archive with additions
         shell: pwsh
         run: |
-          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV" -DestinationPath ghidra.zip
+          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV" -DestinationPath ghidra.zip
           mkdir -p public/builds/
           cp ghidra.zip ghidra-${{ matrix.os }}.zip
 
