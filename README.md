@@ -3,7 +3,7 @@
 ## **🛈 ATTENTION: Ghidra 9.2 is now [generally availlable](https://ghidra-sre.org/releaseNotes_9.2.html)! However, I will continue to provide binaries of the latest changes to both Ghidra core and extensions**  
 
 
-A distribution of Ghidra 9.2 with extensions and patches included to simplify reversing code patterns commonly found in games.
+A distribution of Ghidra 9.3 with extensions and patches included to simplify reversing code patterns commonly found in games.
 
 ## **⚠ WARNING: Unstable patches and features included.**  
 
