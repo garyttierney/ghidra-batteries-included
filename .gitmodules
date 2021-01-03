@@ -1,10 +1,11 @@
 [submodule "ghidra-upstream"]
 	path = ghidra/upstream
 	url = https://github.com/NationalSecurityAgency/ghidra.git
+	branch = debugger
 [submodule "ghidra/ext-cpp-class-analyzer"]
 	path = ghidra/ext-cpp-class-analyzer
 	url = https://github.com/astrelsky/Ghidra-Cpp-Class-Analyzer
-	branch = experimental
+	branch = dev
 [submodule "ghidra/ext-ret-sync"]
 	path = ghidra/ext-ret-sync
 	url = https://github.com/garyttierney/ret-sync.git
