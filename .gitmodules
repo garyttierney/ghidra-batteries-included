@@ -12,3 +12,6 @@
 [submodule "ghidra/ext-orbis"]
 	path = ghidra/ext-orbis
 	url = https://github.com/astrelsky/GhidraOrbis
+[submodule "ghidra/ext-ghidra-kotlin-script"]
+	path = ghidra/ext-ghidra-kotlin-script
+	url = https://github.com/garyttierney/ghidra-kotlin-script.git

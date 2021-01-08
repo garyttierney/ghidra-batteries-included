@@ -130,6 +130,14 @@ jobs:
         env:
           GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
 
+      - name: Build Ghidra Kotlin Script
+        working-directory: ghidra/ext-ghidra-kotlin-script
+        run: |
+          gradle buildExtension
+          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
+        env:
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
+
       - name: Repack Ghidra archive with additions
         shell: pwsh
         run: |
