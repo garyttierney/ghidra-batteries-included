@@ -1,7 +1,47 @@
 name: Build distributions and container images
 on: push
 jobs:
+  prepare_release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+        if: ${{ github.ref == 'refs/heads/master' }}
+
+      - name: Detect version of Ghidra
+        id: ghidra_version
+        run: |
+          while IFS='=' read -r var value; do
+            normalized_var=$(sed 's/\./_/g' <<< "$var")
+            declare "$normalized_var=$value"
+          done < ghidra/upstream/Ghidra/application.properties
+
+          echo "::set-output name=release_name::$application_name ${application_version}-${application_release_name} ($(date -u -I))"
+          echo "::set-output name=release_tag::${application_version}_${application_release_name}_$(date -u +%s)"
+        shell: bash
+        if: ${{ github.ref == 'refs/heads/master' }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.ghidra_version.outputs.release_tag }}
+          release_name: ${{ steps.ghidra_version.outputs.release_name }}
+          body: |
+            Automated release management from GitHub actions
+          draft: false
+          prerelease: false
+        if: ${{ github.ref == 'refs/heads/master' }}
+
   build_distribution:
+    needs:
+      - prepare_release
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
@@ -91,15 +131,6 @@ jobs:
         env:
           GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
 
-#      - name: Build ret-sync
-#        working-directory: ghidra/ext-ret-sync/ext_ghidra
-#        run: |
-#          rm dist/*.zip
-#          gradle buildExtension
-#          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
-#        env:
-#          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
-
       - name: Repack Ghidra archive with additions
         shell: pwsh
         run: |
@@ -113,11 +144,14 @@ jobs:
           name: ghidra-distribution-${{ matrix.os }}
           path: ghidra.zip
 
-      - name: Upload distribution to Azure
-        uses: fixpoint/azblob-upload-artifact@v4
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          connection-string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          name: builds
-          path: ghidra-${{ matrix.os }}.zip
-          container: "$web"
+          upload_url: ${{ needs.build_distribution.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ghidra.zip
+          asset_name: ghidra-distribution-${{ matrix.os }}
+          asset_content_type: application/zip
         if: ${{ github.ref == 'refs/heads/master' }}
