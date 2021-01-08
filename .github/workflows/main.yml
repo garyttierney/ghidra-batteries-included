@@ -4,7 +4,7 @@ jobs:
   prepare_release:
     runs-on: ubuntu-latest
     outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url}}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -40,8 +40,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/master' }}
 
   build_distribution:
-    needs:
-      - prepare_release
+    needs: prepare_release
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
@@ -150,7 +149,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.build_distribution.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          upload_url: ${{ needs.prepare_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ghidra.zip
           asset_name: ghidra-distribution-${{ matrix.os }}
           asset_content_type: application/zip
