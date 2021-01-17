@@ -1,6 +1,2 @@
-# For loops in the decompiler
-https://github.com/NationalSecurityAgency/ghidra/pull/2532.patch
-# Increment/decrement in the decompiler
-https://github.com/NationalSecurityAgency/ghidra/pull/2525.patch
 # Revert the shifted pointers patch (https://github.com/garyttierney/ghidra-batteries-included/issues/60#issuecomment-756481997)
 https://gist.githubusercontent.com/garyttierney/babca6228dbd3a2b4195cb1fa1c0023d/raw/99dacbfdf2cf1b366a29b3162d7a58c96895d574/0001-Revert-changes-made-by-shifted-pointer-patch.patch
