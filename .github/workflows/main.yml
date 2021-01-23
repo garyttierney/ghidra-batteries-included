@@ -131,17 +131,17 @@ jobs:
           GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
 
       - name: Repack Ghidra archive with additions
-        shell: pwsh
+        shell: bash
         run: |
-          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV" -DestinationPath ghidra.zip
+          tar cvzf ghidra.tar.gz "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV"
           mkdir -p public/builds/
-          cp ghidra.zip ghidra-${{ matrix.os }}.zip
+          cp ghidra.tar.gz ghidra-${{ matrix.os }}.zip
 
       - name: Archive distribution
         uses: actions/upload-artifact@v2
         with:
           name: ghidra-distribution-${{ matrix.os }}
-          path: ghidra.zip
+          path: ghidra.tar.gz
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -150,7 +150,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.prepare_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ghidra.zip
-          asset_name: ghidra-distribution-${{ matrix.os }}
+          asset_path: ghidra.tar.gz
+          asset_name: ghidra-distribution-${{ matrix.os }}.tar.gz
           asset_content_type: application/zip
         if: ${{ github.ref == 'refs/heads/master' }}
