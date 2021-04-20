@@ -102,17 +102,21 @@ jobs:
               }
           }
 
+      - name: Fetch Gradle wrapper
+        run: |
+          gradle wrapper --gradle-version 7.0
+
       - name: Download Ghidra dependency repository
         working-directory: ghidra/upstream
         run: |
-          gradle --init-script gradle/support/fetchDependencies.gradle init --quiet 2>&1 > ghidra-dependencies.log
+          ./gradlew --init-script gradle/support/fetchDependencies.gradle init --quiet 2>&1 > ghidra-dependencies.log
         env:
           GRADLE_OPTS:  -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
 
       - name: Build Ghidra
         working-directory: ghidra/upstream
         run: |
-          gradle buildGhidra
+          ./gradlew buildGhidra
         env:
           GRADLE_OPTS: -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
 
@@ -125,7 +129,8 @@ jobs:
       - name: Build C++ Class Analyzer
         working-directory: ghidra/ext-cpp-class-analyzer
         run: |
-          gradle buildExtension
+          gradle wrapper --gradle-version 7.0
+          ./gradlew buildExtension
           mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
         env:
           GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
