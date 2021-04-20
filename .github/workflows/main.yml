@@ -103,8 +103,9 @@ jobs:
           }
 
       - name: Fetch Gradle wrapper
+        working-directory: ghidra/upstream
         run: |
-          gradle wrapper --gradle-version 7.0
+          gradle wrapper --gradle-version 6.8
 
       - name: Download Ghidra dependency repository
         working-directory: ghidra/upstream
@@ -129,7 +130,7 @@ jobs:
       - name: Build C++ Class Analyzer
         working-directory: ghidra/ext-cpp-class-analyzer
         run: |
-          gradle wrapper --gradle-version 7.0
+          gradle wrapper --gradle-version 6.8
           ./gradlew buildExtension
           mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
         env:
