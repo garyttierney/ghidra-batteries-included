@@ -106,7 +106,7 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: ghidra/upstream
-          arguments: --init-script gradle/support/fetchDependencies.gradle init --quiet 2>&1 > ghidra-dependencies.log
+          arguments: --init-script gradle/support/fetchDependencies.gradle init --quiet
           gradle-version: 6.8
         env:
           GRADLE_OPTS:  -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
