@@ -105,6 +105,7 @@ jobs:
       - name: Download Ghidra dependency repository
         uses: eskatos/gradle-command-action@v1
         with:
+          build-root-directory: ghidra/upstream
           arguments: --init-script gradle/support/fetchDependencies.gradle init --quiet 2>&1 > ghidra-dependencies.log
           gradle-version: 6.8
         env:
@@ -113,7 +114,7 @@ jobs:
       - name: Build Ghidra
         uses: eskatos/gradle-command-action@v1
         with:
-          build-root-directory: some/subdirectory
+          build-root-directory: ghidra/upstream
           arguments: buildGhidra
           gradle-version: 6.8
         env:
