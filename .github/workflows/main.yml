@@ -133,16 +133,16 @@ jobs:
           build-root-directory: ghidra/ext-cpp-class-analyzer
           gradle-version: 6.8
         env:
-          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_10.0_DEV/
 
       - name: Copy C++ Class Analyzer to distribution
         run: |
-          mv ghidra/ext-cpp-class-analyzer/dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV/Extensions/Ghidra"
+          mv ghidra/ext-cpp-class-analyzer/dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_10.0_DEV/Extensions/Ghidra"
 
       - name: Repack Ghidra archive with additions
         shell: pwsh
         run: |
-          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.3_DEV" -DestinationPath ghidra.zip
+          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_10.0_DEV" -DestinationPath ghidra.zip
           mkdir -p public/builds/
           cp ghidra.zip ghidra-${{ matrix.os }}.zip
 
