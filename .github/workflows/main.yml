@@ -1,19 +1,25 @@
 name: Build distributions and container images
-on: push
+on:
+  push:
+    branches: master
+  pull_request:
+    branches: master
+  workflow_dispatch:
 jobs:
   prepare_release:
     runs-on: ubuntu-latest
     outputs:
+      ghidra_ver: ${{ steps.ghidra_version.outputs.ghidra_ver }}
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          submodules: "recursive"
-        if: ${{ github.ref == 'refs/heads/master' }}
+          submodules: recursive
 
       - name: Detect version of Ghidra
         id: ghidra_version
+        shell: bash
         run: |
           while IFS='=' read -r var value; do
             normalized_var=$(sed 's/\./_/g' <<< "$var")
@@ -22,26 +28,23 @@ jobs:
 
           echo "::set-output name=release_name::$application_name ${application_version}-${application_release_name} ($(date -u -I))"
           echo "::set-output name=release_tag::${application_version}_${application_release_name}_$(date -u +%s)"
-        shell: bash
-        if: ${{ github.ref == 'refs/heads/master' }}
+          echo "::set-output name=ghidra_ver::${application_version}_${application_release_name}"
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.ghidra_version.outputs.release_tag }}
           release_name: ${{ steps.ghidra_version.outputs.release_name }}
-          body: |
-            Automated release management from GitHub actions
-          draft: false
-          prerelease: false
-        if: ${{ github.ref == 'refs/heads/master' }}
+          body: Automated release management from GitHub Actions
+        if: github.event.action != 'pull_request'
 
   build_distribution:
     needs: prepare_release
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
 
@@ -50,14 +53,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          submodules: "recursive"
+          submodules: recursive
 
       - name: Install Java 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: '11'
-          java-package: jdk
-          architecture: x64
+          distribution: adopt
+          java-version: 11
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
@@ -77,13 +79,13 @@ jobs:
         uses: crazy-max/ghaction-chocolatey@v1
         with:
           args: install -y winflexbison
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: matrix.os == 'windows-latest'
 
       - name: Fix win_flex.exe and win_bison.exe command names
         run: |
           Rename-Item (Get-Command win_flex).Path flex.exe
           Rename-Item (Get-Command win_bison).Path bison.exe
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: matrix.os == 'windows-latest'
 
       - name: Apply Ghidra patches
         working-directory: ghidra/upstream
@@ -102,48 +104,53 @@ jobs:
               }
           }
 
+      - name: Set parameters
+        id: params
+        run: |
+          echo "::set-output name=build-root-directory::ghidra/upstream"
+          echo "::set-output name=gradle-version::6.8"
+          echo "::set-output name=GRADLE_OPTS::-Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false"
+
       - name: Download Ghidra dependency repository
         uses: eskatos/gradle-command-action@v1
         with:
-          build-root-directory: ghidra/upstream
+          build-root-directory: ${{ steps.params.outputs.build-root-directory }}
           arguments: --init-script gradle/support/fetchDependencies.gradle init --quiet
-          gradle-version: 6.8
+          gradle-version: ${{ steps.params.outputs.gradle-version }}
         env:
-          GRADLE_OPTS:  -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
+          GRADLE_OPTS: ${{ steps.params.outputs.GRADLE_OPTS }}
 
       - name: Build Ghidra
         uses: eskatos/gradle-command-action@v1
         with:
-          build-root-directory: ghidra/upstream
+          build-root-directory: ${{ steps.params.outputs.build-root-directory }}
           arguments: buildGhidra
-          gradle-version: 6.8
+          gradle-version: ${{ steps.params.outputs.gradle-version }}
         env:
-          GRADLE_OPTS: -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.daemon=false
+          GRADLE_OPTS: ${{ steps.params.outputs.GRADLE_OPTS }}
 
       - name: Unpack archive for out of tree extension builds
-        working-directory: ghidra/upstream
+        working-directory: ${{ steps.params.outputs.build-root-directory }}
         shell: pwsh
-        run: |
-          Expand-Archive -Path build/dist/*.zip -DestinationPath exploded
+        run: Expand-Archive build/dist/*.zip exploded
 
       - name: Build C++ Class Analyzer
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: buildExtension
           build-root-directory: ghidra/ext-cpp-class-analyzer
-          gradle-version: 6.8
+          gradle-version: ${{ steps.params.outputs.gradle-version }}
         env:
-          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_10.1_DEV/
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_${{ needs.prepare_release.outputs.ghidra_ver }}/
 
-      - name: Copy C++ Class Analyzer to distribution
-        run: |
-          mv ghidra/ext-cpp-class-analyzer/dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_10.1_DEV/Extensions/Ghidra"
+      - name: Move C++ Class Analyzer to distribution
+        run: mv ghidra/ext-cpp-class-analyzer/dist/*.zip "${{ github.workspace }}/${{ steps.params.outputs.build-root-directory }}/exploded/ghidra_${{ needs.prepare_release.outputs.ghidra_ver }}/Extensions/Ghidra"
 
       - name: Repack Ghidra archive with additions
         shell: pwsh
         run: |
-          Compress-Archive -Path "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_10.1_DEV" -DestinationPath ghidra.zip
-          mkdir -p public/builds/
+          Compress-Archive "${{ github.workspace }}/${{ steps.params.outputs.build-root-directory }}/exploded/ghidra_${{ needs.prepare_release.outputs.ghidra_ver }}" ghidra.zip
+          mkdir public/builds
           cp ghidra.zip ghidra-${{ matrix.os }}.zip
 
       - name: Archive distribution
@@ -151,15 +158,15 @@ jobs:
         with:
           name: ghidra-distribution-${{ matrix.os }}
           path: ghidra.zip
+          if-no-files-found: error
 
       - name: Upload Release Asset
-        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.prepare_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          upload_url: ${{ needs.prepare_release.outputs.upload_url }}
           asset_path: ghidra.zip
           asset_name: ghidra-distribution-${{ matrix.os }}.zip
           asset_content_type: application/zip
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: github.event.action != 'pull_request'
