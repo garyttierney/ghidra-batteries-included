@@ -39,7 +39,7 @@ jobs:
           tag_name: ${{ steps.ghidra_version.outputs.release_tag }}
           release_name: ${{ steps.ghidra_version.outputs.release_name }}
           body: Automated release management from GitHub Actions
-        if: github.event.action != 'pull_request'
+        if: github.event.action != 'pull_request' && github.ref == 'refs/heads/master'
 
   build_distribution:
     needs: prepare_release
@@ -169,4 +169,4 @@ jobs:
           asset_path: ghidra.zip
           asset_name: ghidra-distribution-${{ matrix.os }}.zip
           asset_content_type: application/zip
-        if: github.event.action != 'pull_request'
+        if: github.event.action != 'pull_request' && github.ref == 'refs/heads/master'
