@@ -1,2 +1,3 @@
 # Revert the shifted pointers patch (https://github.com/garyttierney/ghidra-batteries-included/issues/60#issuecomment-756481997)
 https://gist.githubusercontent.com/garyttierney/babca6228dbd3a2b4195cb1fa1c0023d/raw/99dacbfdf2cf1b366a29b3162d7a58c96895d574/0001-Revert-changes-made-by-shifted-pointer-patch.patch
+https://gist.githubusercontent.com/garyttierney/83339f642c18d5ddbe2333bf870bb8c4/raw/485ad9597d570aa6dd8e9390942f53aa25ee434e/0001.patch
