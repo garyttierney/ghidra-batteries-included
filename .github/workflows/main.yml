@@ -146,6 +146,14 @@ jobs:
       - name: Move C++ Class Analyzer to distribution
         run: mv ghidra/ext-cpp-class-analyzer/dist/*.zip "${{ github.workspace }}/${{ steps.params.outputs.build-root-directory }}/exploded/ghidra_${{ needs.prepare_release.outputs.ghidra_ver }}/Extensions/Ghidra"
 
+      - name: Build GhidraOrbis
+        working-directory: ghidra/ext-orbis
+        run: |
+          gradle buildExtension
+          mv dist/*.zip "${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/Extensions/Ghidra"
+        env:
+          GHIDRA_INSTALL_DIR: ${{ github.workspace }}/ghidra/upstream/exploded/ghidra_9.2_DEV/
+
       - name: Repack Ghidra archive with additions
         shell: pwsh
         run: |
